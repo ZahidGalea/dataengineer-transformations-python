@@ -91,6 +91,8 @@ def test_should_maintain_all_data_it_reads(spark_session, helpers) -> None:
 
 def test_should_add_distance_column_with_calculated_distance(spark_session, helpers) -> None:
     given_ingest_folder, given_transform_folder = helpers.create_input_and_output_folders()
+    # It generates parquet
+    helpers.write_parquet_file(spark_session, SAMPLE_DATA, BASE_COLUMNS, given_ingest_folder)
     citibike_distance_calculation.run(spark_session, given_ingest_folder, given_transform_folder)
 
     actual_dataframe = spark_session.read.parquet(given_transform_folder)
@@ -104,6 +106,6 @@ def test_should_add_distance_column_with_calculated_distance(spark_session, help
     )
     expected_distance_schema = StructField('distance', DoubleType(), nullable=True)
     actual_distance_schema = actual_dataframe.schema['distance']
-
+    actual_dataframe.take(3)
     assert expected_distance_schema == actual_distance_schema
     assert expected_dataframe.collect() == actual_dataframe.collect()
