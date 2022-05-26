@@ -1,4 +1,4 @@
-from data_transformations.citibike import ingest
+from src.data_transformations.citibike import ingest
 
 
 def test_ingest_sanitization_and_content(helpers, spark_session) -> None:

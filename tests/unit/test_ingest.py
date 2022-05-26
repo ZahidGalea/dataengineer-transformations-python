@@ -1,6 +1,6 @@
 import pytest
 
-from data_transformations.citibike import ingest
+from src.data_transformations.citibike import ingest
 
 
 @pytest.mark.parametrize("input,expected", [(['foo'], ['foo']),

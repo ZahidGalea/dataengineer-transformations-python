@@ -1,6 +1,6 @@
 from pyspark.sql.types import StructField, DoubleType
 
-from data_transformations.citibike import distance_transformer
+from src.data_transformations.citibike import distance_transformer
 
 BASE_COLUMNS = [
     "tripduration",

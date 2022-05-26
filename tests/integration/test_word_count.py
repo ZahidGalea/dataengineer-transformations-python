@@ -1,4 +1,4 @@
-from data_transformations.wordcount import word_count_transformer
+from src.data_transformations.wordcount import word_count_transformer
 
 
 def test_should_tokenize_words_and_count_them(spark_session, helpers) -> None:
