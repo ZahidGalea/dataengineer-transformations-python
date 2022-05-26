@@ -96,7 +96,6 @@ def test_should_maintain_all_data_it_reads() -> None:
     assert expected_schema.issubset(actual_schema)
 
 
-@pytest.mark.skip
 def test_should_add_distance_column_with_calculated_distance() -> None:
     given_ingest_folder, given_transform_folder = __create_ingest_and_transform_folders()
     distance_transformer.run(SPARK, given_ingest_folder, given_transform_folder)
