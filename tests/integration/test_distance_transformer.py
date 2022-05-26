@@ -1,6 +1,6 @@
 from pyspark.sql.types import StructField, DoubleType
 
-from src.data_transformations.citibike import distance_transformer
+from source.jobs.citibike.transformation import citibike_distance_calculation
 
 BASE_COLUMNS = [
     "tripduration",
@@ -80,7 +80,7 @@ def test_should_maintain_all_data_it_reads(spark_session, helpers) -> None:
     helpers.write_parquet_file(spark_session, SAMPLE_DATA, BASE_COLUMNS, given_ingest_folder)
 
     given_dataframe = spark_session.read.parquet(given_ingest_folder)
-    distance_transformer.run(spark_session, given_ingest_folder, given_transform_folder)
+    citibike_distance_calculation.run(spark_session, given_ingest_folder, given_transform_folder)
 
     actual_dataframe = spark_session.read.parquet(given_transform_folder)
     actual_columns = set(actual_dataframe.columns)
@@ -94,7 +94,7 @@ def test_should_maintain_all_data_it_reads(spark_session, helpers) -> None:
 
 def test_should_add_distance_column_with_calculated_distance(spark_session, helpers) -> None:
     given_ingest_folder, given_transform_folder = helpers.create_input_and_output_folders()
-    distance_transformer.run(spark_session, given_ingest_folder, given_transform_folder)
+    citibike_distance_calculation.run(spark_session, given_ingest_folder, given_transform_folder)
 
     actual_dataframe = spark_session.read.parquet(given_transform_folder)
     expected_dataframe = spark_session.createDataFrame(

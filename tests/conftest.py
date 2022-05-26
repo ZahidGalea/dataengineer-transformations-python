@@ -24,9 +24,9 @@ class Helpers:
             input_file.writelines(input_file_lines)
 
     @staticmethod
-    def write_parquet_file(spark_session, data, columns, target_folder) -> None:
+    def write_parquet_file(spark_session, data, columns, target_path) -> None:
         ingest_dataframe = spark_session.createDataFrame(data, columns)
-        ingest_dataframe.write.parquet(target_folder, mode='overwrite')
+        ingest_dataframe.write.parquet(target_path, mode='overwrite')
 
 
 @pytest.fixture

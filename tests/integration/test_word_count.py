@@ -1,4 +1,4 @@
-from src.data_transformations.wordcount import word_count_transformer
+from source.jobs.wordcout.transformation import word_count
 
 
 def test_should_tokenize_words_and_count_them(spark_session, helpers) -> None:
@@ -32,7 +32,7 @@ def test_should_tokenize_words_and_count_them(spark_session, helpers) -> None:
     output_path = output_folder + '/output'
     helpers.write_lines_file(input_text_path=input_path, input_file_lines=lines)
 
-    word_count_transformer.run(spark_session, input_path=input_path, output_path=output_path)
+    word_count.run(spark_session, input_file_path=input_path, output_file_path=output_path)
 
     actual = spark_session.read.csv(output_path, header=True, inferSchema=True)
     expected_data = [
