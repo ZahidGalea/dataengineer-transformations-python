@@ -17,7 +17,7 @@ if __name__ == '__main__':
     now = datetime.now()
     current_time = now.strftime("%Y-%m-%d%H:%M:%S")
     # TODO: Logs must be on a external storage or folder
-    logging.basicConfig(filename=f'job_{APP_NAME}_{current_time}.log', level=logging.INFO)
+    logging.basicConfig(filename=f'logs/job_{APP_NAME}_{current_time}.log', level=logging.INFO)
     logging.info(sys.argv)
 
     if len(sys.argv) != 3:

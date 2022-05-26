@@ -83,12 +83,9 @@ def test_should_maintain_all_data_it_reads(spark_session, helpers) -> None:
     citibike_distance_calculation.run(spark_session, given_ingest_folder, given_transform_folder)
 
     actual_dataframe = spark_session.read.parquet(given_transform_folder)
-    actual_columns = set(actual_dataframe.columns)
     actual_schema = set(actual_dataframe.schema)
-    expected_columns = set(given_dataframe.columns)
     expected_schema = set(given_dataframe.schema)
 
-    assert expected_columns == actual_columns
     assert expected_schema.issubset(actual_schema)
 
 

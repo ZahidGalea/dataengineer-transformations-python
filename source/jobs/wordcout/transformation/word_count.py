@@ -1,11 +1,9 @@
 import logging
-
 import sys
+from datetime import datetime
 from pyspark.sql import SparkSession
-
 from source.utils.ingestion.local_file_read import txt_to_dataframe
 
-LOG_FILENAME = '../../project.log'
 APP_NAME = "WordCount"
 
 
@@ -17,7 +15,11 @@ def run(ss: SparkSession, input_file_path: str, output_file_path: str) -> None:
 
 
 if __name__ == '__main__':
-    logging.basicConfig(filename=LOG_FILENAME, level=logging.INFO)
+    now = datetime.now()
+    current_time = now.strftime("%Y-%m-%d%H:%M:%S")
+    # TODO: Logs must be on a external storage or folder
+    logging.basicConfig(filename=f'logs/job_{APP_NAME}_{current_time}.log', level=logging.INFO)
+    logging.info(sys.argv)
     logging.info(sys.argv)
 
     if len(sys.argv) != 3:
