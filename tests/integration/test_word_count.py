@@ -1,25 +1,7 @@
-import os
-import tempfile
-from typing import Tuple, List
-
-import pytest
-
 from data_transformations.wordcount import word_count_transformer
-from tests.integration import SPARK
 
 
-def _get_file_paths(input_file_lines: List[str]) -> Tuple[str, str]:
-    base_path = tempfile.mkdtemp()
-
-    input_text_path = "%s%sinput.txt" % (base_path, os.path.sep)
-    with open(input_text_path, 'w') as input_file:
-        input_file.writelines(input_file_lines)
-
-    output_path = "%s%soutput" % (base_path, os.path.sep)
-    return input_text_path, output_path
-
-
-def test_should_tokenize_words_and_count_them() -> None:
+def test_should_tokenize_words_and_count_them(spark_session, helpers) -> None:
     lines = [
         "In my younger and more vulnerable years my father gave me some advice that I've been "
         "turning over in my mind ever since. \"Whenever you feel like criticising any one,\""
@@ -44,11 +26,11 @@ def test_should_tokenize_words_and_count_them() -> None:
         "arms farther.... And one fine morning----",
         "So we beat on, boats against the current, borne back ceaselessly into the past.      "
     ]
-    input_file_path, output_path = _get_file_paths(lines)
+    input_file_path, output_path = helpers.get_file_paths(lines)
 
-    word_count_transformer.run(SPARK, input_file_path, output_path)
+    word_count_transformer.run(spark_session, input_file_path, output_path)
 
-    actual = SPARK.read.csv(output_path, header=True, inferSchema=True)
+    actual = spark_session.read.csv(output_path, header=True, inferSchema=True)
     expected_data = [
         ["a", 4],
         ["across", 1],
@@ -258,6 +240,6 @@ def test_should_tokenize_words_and_count_them() -> None:
         ["you've", 1],
         ["younger", 1],
     ]
-    expected = SPARK.createDataFrame(expected_data, ["word", "count"])
+    expected = spark_session.createDataFrame(expected_data, ["word", "count"])
 
     assert actual.collect() == expected.collect()
