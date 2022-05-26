@@ -106,6 +106,6 @@ def test_should_add_distance_column_with_calculated_distance(spark_session, help
     )
     expected_distance_schema = StructField('distance', DoubleType(), nullable=True)
     actual_distance_schema = actual_dataframe.schema['distance']
-    actual_dataframe.take(3)
     assert expected_distance_schema == actual_distance_schema
+    # TODO: Change to use the exact row of each one
     assert expected_dataframe.collect() == actual_dataframe.collect()
