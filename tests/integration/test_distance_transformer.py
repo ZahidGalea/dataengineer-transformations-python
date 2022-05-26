@@ -77,7 +77,7 @@ SAMPLE_DATA = [
 
 def test_should_maintain_all_data_it_reads(spark_session, helpers) -> None:
     given_ingest_folder, given_transform_folder = helpers.create_input_and_output_folders()
-    helpers.write_as_parquet_file(spark_session, SAMPLE_DATA, BASE_COLUMNS, given_ingest_folder)
+    helpers.write_parquet_file(spark_session, SAMPLE_DATA, BASE_COLUMNS, given_ingest_folder)
 
     given_dataframe = spark_session.read.parquet(given_ingest_folder)
     distance_transformer.run(spark_session, given_ingest_folder, given_transform_folder)

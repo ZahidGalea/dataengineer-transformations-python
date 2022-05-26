@@ -26,9 +26,13 @@ def test_should_tokenize_words_and_count_them(spark_session, helpers) -> None:
         "arms farther.... And one fine morning----",
         "So we beat on, boats against the current, borne back ceaselessly into the past.      "
     ]
-    input_file_path, output_path = helpers.get_file_paths(lines)
 
-    word_count_transformer.run(spark_session, input_file_path, output_path)
+    input_folder, output_folder = helpers.create_input_and_output_folders()
+    input_path = input_folder + '/input.txt'
+    output_path = output_folder + '/output'
+    helpers.write_lines_file(input_text_path=input_path, input_file_lines=lines)
+
+    word_count_transformer.run(spark_session, input_path=input_path, output_path=output_path)
 
     actual = spark_session.read.csv(output_path, header=True, inferSchema=True)
     expected_data = [
